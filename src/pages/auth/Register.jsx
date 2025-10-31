@@ -16,6 +16,7 @@ import Loading from "../../components/loading/Loading";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
 import AlertModal from "../../components/alert/AlertModal";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Register = () => {
   const { register } = useAuth();
@@ -27,6 +28,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  DocumentTitle(translations[language].regiser)
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -116,12 +118,12 @@ const Register = () => {
               </Button>
               <Box sx={{ mt: 3 }}>
                 <Typography component="p">
-                {translations[language].already_user}
+                  {translations[language].already_user}
                   <Button href="/login">{translations[language].login}</Button>
                 </Typography>
               </Box>
             </Box>
-          </Box> 
+          </Box>
         </Paper>
       </Container>
     </>

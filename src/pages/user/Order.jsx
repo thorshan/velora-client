@@ -16,9 +16,11 @@ import { orderApi } from "../../api/orderApi";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
 import Loading from "../../components/loading/Loading";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Order = () => {
   const { language } = useLanguage();
+  DocumentTitle(translations[language].orders)
   const [orders, setOrders] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteOrderId, setDeleteOrderId] = useState(null);
@@ -209,7 +211,7 @@ const Order = () => {
                   <TableCell>
                     <Box
                       sx={{
-                        p: 1,
+                        p: 0.7,
                         borderRadius: 1,
                         bgcolor: () =>
                           r.orderStatus === "Ordered"
@@ -234,7 +236,7 @@ const Order = () => {
                               handleStatusUpdate(r._id, "Delivered")
                             }
                           >
-                            {translations[language].approved}
+                            {translations[language].approve}
                           </Button>
                         </>
                       )}

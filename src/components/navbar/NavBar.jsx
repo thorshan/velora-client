@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
-  Typography,
   Box,
   Stack,
   Button,
@@ -22,7 +21,6 @@ import {
 import PropTypes from "prop-types";
 import {
   Menu as MenuIcon,
-  Diversity2TwoTone as Logo,
   Logout,
   People,
   Dashboard,
@@ -37,6 +35,7 @@ import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { ROLES } from "../../utils/constants";
+import { AppLogo } from "../logo/AppLogo";
 
 function ElevationScroll({ ...props }) {
   const { children, window } = props;
@@ -147,14 +146,7 @@ const NavBar = ({ props, count }) => {
             >
               <MenuIcon />
             </IconButton>
-
-            <Logo
-              color="primary"
-              sx={{ mr: 1, display: { xs: "none", sm: "inline" } }}
-            />
-            <Typography variant="h6" component="div" color="primary">
-              Velora
-            </Typography>
+            <AppLogo />
           </Box>
 
           {/* Center: Nav links (hide on mobile) */}

@@ -26,6 +26,8 @@ import { reviewApi } from "../../api/reviewApi";
 import { orderApi } from "../../api/orderApi";
 import Loading from "../../components/loading/Loading";
 import BreadCrumbs from "../../components/breadcrumbs/BreadCrumbs";
+import { useNavigate } from "react-router-dom";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -33,9 +35,10 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [orders, setOrders] = useState([]);
-  // const [open, setOpen] = useState(true);
   const [openItems, setOpenItems] = useState({});
   const userId = user?.id;
+  const navigate = useNavigate();
+  DocumentTitle(user?.name);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -115,14 +118,16 @@ const Profile = () => {
               <Typography variant="caption">
                 {translations[language].email} {" ・ "} {user?.email}
               </Typography>
-              <Typography color="primary">
-                {translations[language].role} {" ・ "} {user?.role}
-              </Typography>
+              {user?.role !== "user" && (
+                <Typography color="primary">
+                  {translations[language].role} {" ・ "} {user?.role}
+                </Typography>
+              )}
             </Stack>
 
             {/* Orders */}
             <Typography variant="tilte1" color="primary">
-              {translations[language].order_no}
+              {translations[language].your_order}
             </Typography>
             <Box my={3}>
               {orders.length === 0 ? (
@@ -140,7 +145,7 @@ const Profile = () => {
                   aria-labelledby="nested-list-subheader"
                   subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
-                      {translations[language].orders}
+                      {translations[language].order_no}
                     </ListSubheader>
                   }
                 >
@@ -157,13 +162,29 @@ const Profile = () => {
                         unmountOnExit
                       >
                         <List component="div" sx={{ p: 2 }}>
+                          <ListSubheader component="div" id="nested-list-subheader" sx={{ mb: 1 }}>
+                            {translations[language].status}
+                          </ListSubheader>
                           <ListItemText
-                            primary={`Status: ${order.orderStatus}`}
-                            sx={{ mb: 1 }}
+                            primary={order.orderStatus}
+                            sx={{
+                              mb: 1,
+                              ml: 2,
+                              color: () => (
+                                order.orderStatus === "Delivered"
+                                  ? "success.main"
+                                  : "warning.main"
+                              )
+                            }}
                           />
-                          <ListItemButton sx={{ color: "error" }}>
-                            {translations[language].delete}
-                          </ListItemButton>
+                          {order.orderStatus !== "Delivered" && (
+                            <ListItemButton onClick={async () => { await orderApi.deleteOrder(order._id); navigate(0) }} sx={{ color: "error" }}>
+                              {translations[language].delete}
+                            </ListItemButton>
+                          )}
+                          {order.orderStatus === "Delivered" && (
+                            <Typography variant="caption" color="error">Your order has been delivered. for more informations please contact us.</Typography>
+                          )}
                         </List>
                       </Collapse>
                     </React.Fragment>

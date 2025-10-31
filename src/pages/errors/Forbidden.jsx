@@ -3,11 +3,12 @@ import { Typography, Button, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Forbidden = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
-
+  DocumentTitle(translations[language].forbidden)
   return (
     <Container
       maxWidth="md"

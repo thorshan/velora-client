@@ -14,6 +14,7 @@ import { userApi } from "../../api/userApi";
 import { brandApi } from "../../api/brandApi";
 import { itemApi } from "../../api/itemApi";
 import { reviewApi } from "../../api/reviewApi";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 // Chart + Date
 import { LineChart } from "@mui/x-charts/LineChart";
@@ -21,7 +22,6 @@ import dayjs from "dayjs";
 
 const Dashboard = () => {
   const { language } = useLanguage();
-
   const [users, setUsers] = useState([]);
   const [brands, setBrands] = useState([]);
   const [items, setItems] = useState([]);
@@ -30,6 +30,7 @@ const Dashboard = () => {
   const [weeklyBrandData, setWeeklyBrandData] = useState([]);
   const [weeklyUserData, setWeeklyUserData] = useState([]);
   const [weeklyReviewData, setWeeklyReviewData] = useState([]);
+  DocumentTitle(translations[language].dashboard);
 
   const days = [
     translations[language]._mon,
@@ -41,140 +42,144 @@ const Dashboard = () => {
     translations[language]._sun,
   ];
 
-  useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const res = await userApi.getAllUser();
-        const users = res.data;
-        setUsers(res.data);
+  useEffect(
+    () => {
+      const fetchAllUsers = async () => {
+        try {
+          const res = await userApi.getAllUser();
+          const users = res.data;
+          setUsers(res.data);
 
-        const today = dayjs();
-        const startOfWeek = today.startOf("week").add(1, "day"); 
-        const endOfWeek = startOfWeek.add(6, "day");
+          const today = dayjs();
+          const startOfWeek = today.startOf("week").add(1, "day");
+          const endOfWeek = startOfWeek.add(6, "day");
 
-        const counts = Array(7).fill(0);
+          const counts = Array(7).fill(0);
 
-        users.forEach((brand) => {
-          if (!brand.createdAt) return;
-          const createdAt = dayjs(brand.createdAt);
+          users.forEach((brand) => {
+            if (!brand.createdAt) return;
+            const createdAt = dayjs(brand.createdAt);
 
-          if (
-            createdAt.isAfter(startOfWeek.subtract(1, "day")) &&
-            createdAt.isBefore(endOfWeek.add(1, "day"))
-          ) {
-            const dayIndex = createdAt.day();
-            const adjustedIndex = (dayIndex + 6) % 7;
-            counts[adjustedIndex]++;
-          }
-        });
+            if (
+              createdAt.isAfter(startOfWeek.subtract(1, "day")) &&
+              createdAt.isBefore(endOfWeek.add(1, "day"))
+            ) {
+              const dayIndex = createdAt.day();
+              const adjustedIndex = (dayIndex + 6) % 7;
+              counts[adjustedIndex]++;
+            }
+          });
 
-        setWeeklyUserData(counts);
-      } catch (err) {
-        console.error("Error fetching users:", err);
-      }
-    };
+          setWeeklyUserData(counts);
+        } catch (err) {
+          console.error("Error fetching users:", err);
+        }
+      };
 
-    const fetchAllBrands = async () => {
-      try {
-        const res = await brandApi.getAllBrands();
-        const brands = res.data;
-        setBrands(res.data);
+      const fetchAllBrands = async () => {
+        try {
+          const res = await brandApi.getAllBrands();
+          const brands = res.data;
+          setBrands(res.data);
 
-        const today = dayjs();
-        const startOfWeek = today.startOf("week").add(1, "day");
-        const endOfWeek = startOfWeek.add(6, "day");
+          const today = dayjs();
+          const startOfWeek = today.startOf("week").add(1, "day");
+          const endOfWeek = startOfWeek.add(6, "day");
 
-        const counts = Array(7).fill(0);
+          const counts = Array(7).fill(0);
 
-        brands.forEach((brand) => {
-          if (!brand.createdAt) return;
-          const createdAt = dayjs(brand.createdAt);
+          brands.forEach((brand) => {
+            if (!brand.createdAt) return;
+            const createdAt = dayjs(brand.createdAt);
 
-          if (
-            createdAt.isAfter(startOfWeek.subtract(1, "day")) &&
-            createdAt.isBefore(endOfWeek.add(1, "day"))
-          ) {
-            const dayIndex = createdAt.day();
-            // Shift so Monday = 0
-            const adjustedIndex = (dayIndex + 6) % 7;
-            counts[adjustedIndex]++;
-          }
-        });
+            if (
+              createdAt.isAfter(startOfWeek.subtract(1, "day")) &&
+              createdAt.isBefore(endOfWeek.add(1, "day"))
+            ) {
+              const dayIndex = createdAt.day();
+              // Shift so Monday = 0
+              const adjustedIndex = (dayIndex + 6) % 7;
+              counts[adjustedIndex]++;
+            }
+          });
 
-        setWeeklyBrandData(counts);
-      } catch (err) {
-        console.error("Error fetching brands:", err);
-      }
-    };
+          setWeeklyBrandData(counts);
+        } catch (err) {
+          console.error("Error fetching brands:", err);
+        }
+      };
 
-    const fetchAllItems = async () => {
-      try {
-        const res = await itemApi.getAllItems();
-        const items = res.data;
-        setItems(items);
+      const fetchAllItems = async () => {
+        try {
+          const res = await itemApi.getAllItems();
+          const items = res.data;
+          setItems(items);
 
-        const today = dayjs();
-        const startOfWeek = today.startOf("week").add(1, "day");
-        const endOfWeek = startOfWeek.add(6, "day");
+          const today = dayjs();
+          const startOfWeek = today.startOf("week").add(1, "day");
+          const endOfWeek = startOfWeek.add(6, "day");
 
-        const counts = Array(7).fill(0);
+          const counts = Array(7).fill(0);
 
-        items.forEach((item) => {
-          if (!item.createdAt) return;
-          const createdAt = dayjs(item.createdAt);
+          items.forEach((item) => {
+            if (!item.createdAt) return;
+            const createdAt = dayjs(item.createdAt);
 
-          if (
-            createdAt.isAfter(startOfWeek.subtract(1, "day")) &&
-            createdAt.isBefore(endOfWeek.add(1, "day"))
-          ) {
-            const dayIndex = createdAt.day(); 
-            const adjustedIndex = (dayIndex + 6) % 7;
-            counts[adjustedIndex]++;
-          }
-        });
+            if (
+              createdAt.isAfter(startOfWeek.subtract(1, "day")) &&
+              createdAt.isBefore(endOfWeek.add(1, "day"))
+            ) {
+              const dayIndex = createdAt.day();
+              const adjustedIndex = (dayIndex + 6) % 7;
+              counts[adjustedIndex]++;
+            }
+          });
 
-        setWeeklyItemData(counts);
-      } catch (err) {
-        console.error("Error fetching items:", err);
-      }
-    };
+          setWeeklyItemData(counts);
+        } catch (err) {
+          console.error("Error fetching items:", err);
+        }
+      };
 
-    const fetchAllReviews = async () => {
-      try {
-        const res = await reviewApi.getAllReviews();
-        setReviews(res.data);
-        const today = dayjs();
-        const startOfWeek = today.startOf("week").add(1, "day");
-        const endOfWeek = startOfWeek.add(6, "day");
+      const fetchAllReviews = async () => {
+        try {
+          const res = await reviewApi.getAllReviews();
+          setReviews(res.data);
+          const today = dayjs();
+          const startOfWeek = today.startOf("week").add(1, "day");
+          const endOfWeek = startOfWeek.add(6, "day");
 
-        const counts = Array(7).fill(0);
+          const counts = Array(7).fill(0);
 
-        reviews.forEach((review) => {
-          if (!review.createdAt) return;
-          const createdAt = dayjs(review.createdAt);
+          reviews.forEach((review) => {
+            if (!review.createdAt) return;
+            const createdAt = dayjs(review.createdAt);
 
-          if (
-            createdAt.isAfter(startOfWeek.subtract(1, "day")) &&
-            createdAt.isBefore(endOfWeek.add(1, "day"))
-          ) {
-            const dayIndex = createdAt.day();
-            // Shift so Monday = 0
-            const adjustedIndex = (dayIndex + 6) % 7;
-            counts[adjustedIndex]++;
-          }
-        });
+            if (
+              createdAt.isAfter(startOfWeek.subtract(1, "day")) &&
+              createdAt.isBefore(endOfWeek.add(1, "day"))
+            ) {
+              const dayIndex = createdAt.day();
+              // Shift so Monday = 0
+              const adjustedIndex = (dayIndex + 6) % 7;
+              counts[adjustedIndex]++;
+            }
+          });
 
-        setWeeklyReviewData(counts);
-      } catch (err) {
-        console.error("Error fetching review:", err);
-      }
-    }
+          setWeeklyReviewData(counts);
+        } catch (err) {
+          console.error("Error fetching review:", err);
+        }
+      };
 
-    fetchAllItems();
-    fetchAllUsers();
-    fetchAllBrands();
-    fetchAllReviews();
-  }, []);
+      fetchAllItems();
+      fetchAllUsers();
+      fetchAllBrands();
+      fetchAllReviews();
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   return (
     <Box

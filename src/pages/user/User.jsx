@@ -17,9 +17,11 @@ import { userApi } from "../../api/userApi";
 import { ROLES } from "../../utils/constants";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Users = () => {
   const { language } = useLanguage();
+  DocumentTitle(translations[language].users)
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [formData, setFormData] = useState({

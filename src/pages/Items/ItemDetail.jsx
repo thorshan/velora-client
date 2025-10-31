@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Box,
   Typography,
@@ -23,6 +23,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Home, Inventory, Store } from "@mui/icons-material";
 import BreadCrumbs from "../../components/breadcrumbs/BreadCrumbs";
 import { promotionApi } from "../../api/promotionApi";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const ItemDetail = () => {
   const { language } = useLanguage();
@@ -36,35 +37,42 @@ const ItemDetail = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const fetchItem = async () => {
+    const fetchItemDetails = async () => {
       setLoading(true);
       try {
-        const resItem = await itemApi.getItem(id);
+        const [resItem, resReview, resPromo] = await Promise.all([
+          itemApi.getItem(id),
+          reviewApi.getReviewByItem(id),
+          promotionApi.getPromotionByItem(id),
+        ]);
+
         setItem(resItem.data);
-        const resReview = await reviewApi.getReviewByItem(id);
         setReviews(Array.isArray(resReview.data) ? resReview.data : []);
-        const resPromo = await promotionApi.getPromotionByItem(id);
-        setPromotion(
-          Array.isArray(resPromo.data) ? resPromo.data[0] : resPromo.data
-        );
+        const promoData = Array.isArray(resPromo.data) ? resPromo.data[0] : resPromo.data;
+        setPromotion(promoData || null);
+
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching item details:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchItem();
+    fetchItemDetails();
   }, [id]);
 
-  const addToCart = () => {
-    setCount(async (prev) => {
-      const newCount = prev + 1;
-      const data = { userId: user.id, itemId: item._id, quantity: newCount };
+  const pageTitle = item ? item.name : 'Loading...';
+  DocumentTitle(pageTitle);
+
+  const addToCart = useCallback(async () => {
+    if (!user || !item) return;
+    try {
+      const data = { userId: user.id, itemId: item._id, quantity: 1 };
       await cartApi.addToCart(data);
-      setOpen(true);
-      return newCount;
-    });
-  };
+      setCount(prev => prev + 1);
+    } catch (err) {
+      console.error("Error adding to cart:", err);
+    }
+  }, [user, item]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {

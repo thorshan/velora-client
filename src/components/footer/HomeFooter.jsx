@@ -9,25 +9,25 @@ const HomeFooter = () => {
   return (
     <Box bgcolor={"primary.main"} sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", p: 3 }}>
         <Box>
-            <Typography variant='h4' color='text.primary'>{translations[language].logo || "Velora"}</Typography>
+            <Typography variant='h4' color='#eceff1'>{translations[language].logo || "Velora"}</Typography>
         </Box>
         <Box>
             <Stack direction={"row"} spacing={3}>
-                <Link variant='caption' href="/about" color="text.primary" underline="none">{translations[language].about}</Link>
-                <Link variant='caption' href="/contact" color="text.primary" underline="none">{translations[language].contact}</Link>
-                <Link variant='caption' href="/terms-and-conditions" color="text.primary" underline="none">{translations[language].terms}</Link>
-                <Link variant='caption' href="/policy" color="text.primary" underline="none">{translations[language].policy}</Link>
+                <Link variant='caption' href="/about" color="#eceff1" underline="none">{translations[language].about}</Link>
+                <Link variant='caption' href="/contact" color="#eceff1" underline="none">{translations[language].contact}</Link>
+                <Link variant='caption' href="/terms-and-conditions" color="#eceff1" underline="none">{translations[language].terms}</Link>
+                <Link variant='caption' href="/policy" color="#eceff1" underline="none">{translations[language].policy}</Link>
             </Stack>
-            <Typography variant='caption' color='text.primary' marginTop={3}>&copy; {new Date().getFullYear()} velora. All rights reserved.</Typography>
+            <Typography variant='caption' color='#eceff1' marginTop={3}>&copy; {new Date().getFullYear()} velora. All rights reserved.</Typography>
         </Box>
         <Box>
             <Stack direction={"row"} spacing={3}>
-                <Link href="https://t.me/veloraecommerce" color="text.primary"><Telegram /></Link>
-                <Link href="https://facebook.com/veloraecommerce" color="text.primary"><Facebook /></Link>
-                <Link href="https://facebook.com/veloraecommerce" color="text.primary"><Instagram /></Link>
-                <Link href="https://whatsapp.com/veloraecommerce" color="text.primary"><WhatsApp /></Link>
+                <Link href="https://t.me/veloraecommerce" color="#eceff1"><Telegram /></Link>
+                <Link href="https://facebook.com/veloraecommerce" color="#eceff1"><Facebook /></Link>
+                <Link href="https://facebook.com/veloraecommerce" color="#eceff1"><Instagram /></Link>
+                <Link href="https://whatsapp.com/veloraecommerce" color="#eceff1"><WhatsApp /></Link>
             </Stack>
-            <Typography variant='caption' color='text.primary' marginTop={3}>{translations[language].support} ・ <Link href="#" color="text.primary">support@velora.com</Link></Typography>
+            <Typography variant='caption' color='#eceff1' marginTop={3}>{translations[language].support} ・ <Link href="#" color="#eceff1">support@velora.com</Link></Typography>
         </Box>
     </Box>
   )

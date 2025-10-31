@@ -28,6 +28,7 @@ import Loading from "../../components/loading/Loading";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
 import dayjs from "dayjs";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -45,6 +46,8 @@ const Checkout = () => {
     return `${date}#${random}`;
   };
   const [formData, setFormData] = useState(null);
+
+  DocumentTitle(translations[language].checkout)
 
   const calculateItemPrices = (cartItem) => {
     const promotionsArray = promotion[String(cartItem.item?._id)];
@@ -133,6 +136,7 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await orderApi.createOrder(formData);
+    await cartApi.clearCart(userId);
     setOpen(true);
     navigate('/shop');
   };
@@ -287,6 +291,7 @@ const Checkout = () => {
             <Button
               variant="outlined"
               color="secondary"
+              onClick={async () => await cartApi.clearCart(userId)}
               component={Link}
               to={`/${userId}/cart`}
             >

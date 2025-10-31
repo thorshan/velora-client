@@ -20,10 +20,12 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
 import { useAuth } from "../../contexts/AuthContext";
 import { categoryApi } from "../../api/categoryApi";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Item = () => {
   const { user } = useAuth();
   const { language } = useLanguage();
+  DocumentTitle(translations[language].items);
   const [items, setItems] = useState([]);
   const [editingItem, setEditingItem] = useState(null);
   const [formData, setFormData] = useState({
@@ -48,7 +50,16 @@ const Item = () => {
   const fetchItems = async () => {
     try {
       const res = await itemApi.getAllItems();
-      setItems(res.data);
+      const allItems = res.data;
+
+      if (user?.role === "admin") {
+        setItems(allItems);
+      }
+
+      if (user?.role !== "admin") {
+        const userItems = await itemApi.getItemByUser(user?.id);
+        setItems(userItems.data);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -76,11 +87,15 @@ const Item = () => {
     }
   };
 
-  useEffect(() => {
-    fetchItems();
-    fetchBrands();
-    fetchCategories();
-  }, []);
+  useEffect(
+    () => {
+      fetchItems();
+      fetchBrands();
+      fetchCategories();
+    },
+    //eslint-disable-next-line
+    []
+  );
 
   const handleAdd = () => {
     setFormData({
@@ -525,7 +540,7 @@ const Item = () => {
                   brands.find((b) => b._id === i.brand)?.name ||
                   "N/A"}
               </TableCell>
-              <TableCell>{i.price}</TableCell>
+              <TableCell>{i.price.toLocaleString()}</TableCell>
               <TableCell>{i.quantity}</TableCell>
               <TableCell>{i.createdBy ? i.createdBy.name : "N/A"}</TableCell>
               <TableCell>

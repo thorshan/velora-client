@@ -22,6 +22,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Loading from "../../components/loading/Loading";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Cart = () => {
   const { language } = useLanguage();
@@ -30,6 +31,7 @@ const Cart = () => {
   const [promotion, setPromotion] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  DocumentTitle(translations[language].your_cart)
 
   const userId = user?.id;
 
@@ -216,16 +218,16 @@ const Cart = () => {
                           sx={{ textDecoration: "line-through" }}
                           color="text.secondary"
                         >
-                          {originalPrice} {translations[language].mmk}
+                          {originalPrice.toLocaleString()} {translations[language].mmk}
                         </Typography>
                         <Typography variant="body2" color="success.main">
-                          {discountedPrice} {translations[language].mmk} (-
+                          {discountedPrice.toLocaleString()} {translations[language].mmk} (-
                           {promo.discount}%)
                         </Typography>
                       </>
                     ) : (
                       <Typography variant="body2" color="primary">
-                        {originalPrice} {translations[language].mmk}
+                        {originalPrice.toLocaleString()} {translations[language].mmk}
                       </Typography>
                     )}
 
@@ -233,7 +235,7 @@ const Cart = () => {
                       {translations[language].quantity} : {cartItem.quantity} {" "} {translations[language].counting}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {translations[language].item_total_price} : {totalPrice} {" "}
+                      {translations[language].item_total_price} : {totalPrice.toLocaleString()} {" "}
                       {translations[language].mmk}
                     </Typography>
                   </CardContent>
@@ -306,7 +308,7 @@ const Cart = () => {
             <Typography variant="h6" fontWeight={600}>
               {cart.items.reduce((total, cartItem) => {
                 const { totalPrice } = calculateItemPrices(cartItem);
-                return total + totalPrice;
+                return (total + totalPrice).toLocaleString();
               }, 0)} {" "} {translations[language].mmk}
             </Typography>
           </CardContent>
@@ -326,7 +328,6 @@ const Cart = () => {
           onClick={handleClear}
           variant="outlined"
           color="error"
-          sx={{ borderRadius: 2 }}
         >
           {translations[language].clear_cart}
         </Button>

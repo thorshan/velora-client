@@ -15,10 +15,12 @@ import { useAuth } from "../../contexts/AuthContext";
 import Loading from "../../components/loading/Loading";
 import NavBar from "../../components/navbar/NavBar";
 import { translations } from "../../utils/translations";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const WriteReview = () => {
   const { user } = useAuth();
   const { language } = useLanguage();
+  DocumentTitle(translations[language].write_review)
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");

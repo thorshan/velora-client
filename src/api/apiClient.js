@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://soulful-psd8.onrender.com/api", // https://soulful-psd8.onrender.com/api
+  baseURL: "https://veloraecommerce.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },

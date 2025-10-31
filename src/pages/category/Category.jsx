@@ -15,6 +15,7 @@ import {
 import { categoryApi } from "../../api/categoryApi";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Category = () => {
   const { language } = useLanguage();
@@ -24,6 +25,7 @@ const Category = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteCategoryId, setDeleteCategoryId] = useState(null);
+  DocumentTitle(translations[language].categories)
 
   // Pagination state
   const [page, setPage] = useState(1);

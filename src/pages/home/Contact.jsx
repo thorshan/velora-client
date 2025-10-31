@@ -3,9 +3,11 @@ import { Box, CardMedia, Typography, Card } from "@mui/material";
 import NavBar from "../../components/navbar/NavBar";
 import { translations } from "../../utils/translations";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Contact = () => {
   const { language } = useLanguage();
+  DocumentTitle(translations[language].contact);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       {/* Navbar */}

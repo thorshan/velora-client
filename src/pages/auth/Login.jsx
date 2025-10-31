@@ -17,6 +17,7 @@ import Loading from "../../components/loading/Loading";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
 import AlertModal from "../../components/alert/AlertModal";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Login = () => {
   const { login } = useAuth();
@@ -28,6 +29,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  DocumentTitle(translations[language].login);
 
   const handleLogin = async (e) => {
     e.preventDefault();

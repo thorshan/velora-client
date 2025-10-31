@@ -20,6 +20,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
 import { userApi } from "../../api/userApi";
 import { categoryApi } from "../../api/categoryApi";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Brand = () => {
   const { language } = useLanguage();
@@ -37,6 +38,7 @@ const Brand = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteBrandId, setDeleteBrandId] = useState(null);
+  DocumentTitle(translations[language].brands);
 
   // Fetch Category and User
   const [categories, setCategories] = useState([]);

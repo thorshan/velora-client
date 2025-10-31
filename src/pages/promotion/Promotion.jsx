@@ -17,9 +17,11 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
 import { promotionApi } from "../../api/promotionApi";
 import { itemApi } from "../../api/itemApi";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Promotion = () => {
   const { language } = useLanguage();
+  DocumentTitle(translations[language].promotions)
   const [promos, setPromos] = useState([]);
   const [items, setItems] = useState([]);
   const [editingPromo, setEditingPromo] = useState(null);
@@ -150,7 +152,7 @@ const Promotion = () => {
           color="primary.main"
           mb={2}
         >
-          {translations[language].brand}
+          {translations[language].promotions}
         </Typography>
         <Stack spacing={2} direction="row">
           <TextField
@@ -177,7 +179,7 @@ const Promotion = () => {
             sx={{ mb: 2 }}
             onClick={handleAdd}
           >
-            {translations[language].add_brand}
+            {translations[language].add_promo}
           </Button>
         </Stack>
       </Box>
@@ -210,7 +212,7 @@ const Promotion = () => {
             <Typography variant="h6" mb={2}>
               {editingPromo
                 ? `${translations[language].name} : ${editingPromo.name}`
-                : translations[language].add_brand}
+                : translations[language].add_promo}
             </Typography>
             <Box component="form" onSubmit={handleSubmit}>
               <Autocomplete
@@ -256,7 +258,7 @@ const Promotion = () => {
               />
               <TextField
                 fullWidth
-                label={translations[language].contact}
+                label={translations[language].promo_code}
                 value={formData.promoCode}
                 onChange={(e) =>
                   setFormData({ ...formData, promoCode: e.target.value })
@@ -266,6 +268,7 @@ const Promotion = () => {
               />
               <TextField
                 fullWidth
+                label={translations[language].expiry_date}
                 type="date"
                 value={
                   formData.expiryDate

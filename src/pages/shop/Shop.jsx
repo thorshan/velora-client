@@ -30,9 +30,11 @@ import { brandApi } from "../../api/brandApi";
 import { reviewApi } from "../../api/reviewApi";
 import { promotionApi } from "../../api/promotionApi";
 import { categoryApi } from "../../api/categoryApi";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Home = () => {
   const { language } = useLanguage();
+  DocumentTitle(translations[language].shop);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -100,11 +102,12 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-    fetchBrands();
-    fetchCategories();
-  }, []);
+  useEffect(
+    () => {
+      fetchData();
+      fetchBrands();
+      fetchCategories();
+    },[]);
 
   // Filtering logic
   const filteredItems = useMemo(
@@ -138,7 +141,7 @@ const Home = () => {
 
       return result;
     },
-    //es-lint-disable-next-line
+    //eslint-disable-next-line
     [items, searchQuery, selectedBrand, selectedCategory, selectedPriceRange]
   );
 
@@ -390,8 +393,7 @@ const Home = () => {
                                   opacity: 0.7,
                                 }}
                               >
-                                {item.price.toLocaleString()}
-                                {" "}
+                                {item.price.toLocaleString()}{" "}
                                 {translations[language].mmk}
                               </Typography>
                               <Typography
@@ -401,8 +403,8 @@ const Home = () => {
                                 {(
                                   item.price -
                                   (item.price * promo.discount) / 100
-                                ).toLocaleString()} {" "}{translations[language].mmk}
-                                
+                                ).toLocaleString()}{" "}
+                                {translations[language].mmk}
                               </Typography>
                             </>
                           ) : (
@@ -410,8 +412,8 @@ const Home = () => {
                               color="primary"
                               sx={{ fontWeight: "bold" }}
                             >
-                              {item.price.toLocaleString()}{" "}{translations[language].mmk}
-                              
+                              {item.price.toLocaleString()}{" "}
+                              {translations[language].mmk}
                             </Typography>
                           )}
                         </Box>

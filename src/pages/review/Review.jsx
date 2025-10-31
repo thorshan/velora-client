@@ -8,7 +8,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TextField,
   Paper,
   Stack,
 } from "@mui/material";
@@ -16,6 +15,7 @@ import { reviewApi } from "../../api/reviewApi";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { translations } from "../../utils/translations";
 import Loading from "../../components/loading/Loading";
+import { DocumentTitle } from "../../components/utils/DocumentTitle";
 
 const Review = () => {
   const { language } = useLanguage();
@@ -23,7 +23,7 @@ const Review = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteReviewId, setDeleteReviewId] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  DocumentTitle(translations[language].reviews)
 
   // Pagination state
   const [page, setPage] = useState(1);
@@ -36,7 +36,6 @@ const Review = () => {
       setReviews(res.data);
     } catch (err) {
       console.error(err);
-      setMessage("Error fetching data: " + err.message);
     } finally {
       setLoading(false);
     }

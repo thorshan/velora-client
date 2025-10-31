@@ -18,9 +18,9 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { translations } from "../utils/translations";
 import { itemApi } from "../api/itemApi";
 import { reviewApi } from "../api/reviewApi";
-import { promotionApi } from "../api/promotionApi";
 import { tabsClasses } from "@mui/material/Tabs";
 import Loading from "../components/loading/Loading";
+import { DocumentTitle } from "../components/utils/DocumentTitle";
 
 const Home = () => {
   const { language } = useLanguage();
@@ -29,6 +29,7 @@ const Home = () => {
   const [reviews, setReviews] = useState([]);
   const [message, setMessage] = useState("");
   const [value, setValue] = useState(0);
+  DocumentTitle()
 
   // Fetch all data
   const fetchData = async () => {
@@ -37,12 +38,9 @@ const Home = () => {
       const itemRes = await itemApi.getAllItems();
       const itemsData = itemRes.data;
 
-      const [allReviews, allPromotions] = await Promise.all([
+      const [allReviews] = await Promise.all([
         Promise.all(
           itemsData.map((item) => reviewApi.getReviewByItem(item._id))
-        ),
-        Promise.all(
-          itemsData.map((item) => promotionApi.getPromotionByItem(item._id))
         ),
       ]);
 
